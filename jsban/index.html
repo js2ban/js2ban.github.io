@@ -116,3 +116,28 @@
 </body>
 </html>
 
+
+
+<!-- QR Code -->
+<div style="text-align:center; margin-top:32px;">
+  <h3>Scan QR</h3>
+  <div id="qrcode"></div>
+</div>
+
+<!-- QRCode.js (CDN) -->
+<script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+
+<script>
+  const url = "https://js2ban.github.io/jsban/";
+
+  QRCode.toString(url, {
+    type: "svg",
+    errorCorrectionLevel: "H",
+    width: 256
+  }, function (err, svg) {
+    if (err) throw err;
+    document.getElementById("qrcode").innerHTML = svg;
+  });
+</script>
+
+
