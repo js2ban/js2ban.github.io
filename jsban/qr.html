@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>QR Generator</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background: white;
+      font-family: system-ui, sans-serif;
+    }
+    #qrcode svg {
+      width: 300px;
+      height: 300px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 16px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="qrcode"></div>
+  <button onclick="downloadSVG()">Download SVG</button>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
+
+  <script>
+    const url = "https://js2ban.github.io/jsban/";
+    let svgData = "";
+
+    QRCode.toString(url, {
+      type: "svg",
+      errorCorrectionLevel: "H"
+    }, function (err, svg) {
+      if (err) console.error(err);
+      svgData = svg;
+      document.getElementById("qrcode").innerHTML = svg;
+    });
+
+    function downloadSVG() {
+      const blob = new Blob([svgData], { type: "image/svg+xml" });
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(blob);
+      link.download = "jsban-qr.svg";
+      link.click();
+    }
+  </script>
+
+</body>
+</html>
