@@ -2,118 +2,39 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Jaeseog Ban | ADVANTAGE TANKERS</title>
+  <title>Jaeseog Ban – QR</title>
 
   <style>
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #f5f6f8;
       margin: 0;
-      padding: 20px;
-      color: #222;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: white;
     }
-    .container {
-      max-width: 420px;
-      margin: auto;
-    }
-    h1 { font-size: 22px; margin-bottom: 4px; }
-    .subtitle {
-      color: #666;
-      margin-bottom: 24px;
-      font-size: 14px;
-    }
-    .card {
-      background: #fff;
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-    }
-    .card h2 { font-size: 17px; margin: 0 0 8px; }
-    .info {
-      font-size: 14px;
-      color: #444;
-      line-height: 1.5;
-      margin-bottom: 14px;
-    }
-    .btn {
-      display: block;
-      text-align: center;
-      background: #0066ff;
-      color: #fff;
-      text-decoration: none;
-      padding: 12px;
-      border-radius: 8px;
-      font-weight: 600;
-    }
-    footer {
-      text-align: center;
-      font-size: 12px;
-      color: #888;
-      margin-top: 24px;
-    }
-    #qrcode svg {
-      width: 240px;
-      height: 240px;
+    #qrcode {
+      width: 280px;
+      height: 280px;
     }
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <h1>Jaeseog Ban</h1>
-    <div class="subtitle">
-      ADVANTAGE TANKERS<br/>
-      Lead Hull &amp; Outfitting Supervisor
-    </div>
 
-    <div class="card">
-      <h2>Hanwha Office</h2>
-      <div class="info">
-        📍 HanwhaOcean Oceanplaza<br/>
-           122, Okpo-ro<br/>
-           Geoje-si, Gyeongsangnam-do<br/>
-        ✉ hanwha.geden@gmail.com
-      </div>
-      <a class="btn" href="hanwha.vcf">연락처 추가</a>
-    </div>
+  <div id="qrcode"></div>
 
-    <div class="card">
-      <h2>Daehan Office</h2>
-      <div class="info">
-        📍 290, Yongang-ro, Samho-eup<br/>
-           Yeongam-gun, Jeollanam-do 58460<br/><br/>
-        📍 498, Joseonso-gil, Hwawon-myeon<br/>
-           Haenam-gun, Jeollanam-do 59000<br/>
-        ✉ daehan.geden@gmail.com
-      </div>
-      <a class="btn" href="daehan.vcf">연락처 추가</a>
-    </div>
+  <!-- QRCode.js (browser-safe) -->
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
-    <!-- QR 영역 -->
-    <div style="text-align:center; margin-top:32px;">
-      <h3>Scan QR</h3>
-      <div id="qrcode"></div>
-    </div>
-
-    <footer>© ADVANTAGE TANKERS</footer>
-  </div>
-
-  <!-- QRCode.js -->
-  <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.4/build/qrcode.min.js"></script>
   <script>
-    QRCode.toString(
-      "https://js2ban.github.io/jsban/",
-      {
-        type: "svg",
-        errorCorrectionLevel: "H"
-      },
-      function (err, svg) {
-        if (err) console.error(err);
-        document.getElementById("qrcode").innerHTML = svg;
-      }
-    );
+    new QRCode(document.getElementById("qrcode"), {
+      text: "https://js2ban.github.io/jsban/",
+      width: 280,
+      height: 280,
+      correctLevel: QRCode.CorrectLevel.H
+    });
   </script>
+
 </body>
 </html>
