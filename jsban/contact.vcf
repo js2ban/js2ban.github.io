@@ -1,0 +1,9 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Ban;Jaeseog;;;
+FN:Jaeseog Ban
+ORG:ABC Company
+TITLE:Senior Engineer
+TEL;TYPE=CELL:010XXXXXXXX
+EMAIL:you@example.com
+END:VCARD
