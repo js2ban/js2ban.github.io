@@ -46,6 +46,7 @@
 
     const TARGET_URL = params.get("u");     // QR에 들어갈 URL
     const NAME = params.get("name") || "qr"; // 파일명용 (옵션)
+    const SIZE = 1024;
 
     if (!TARGET_URL) {
       alert("Missing target URL (?u=...)");
@@ -59,8 +60,8 @@
 
     const qr = new QRCode(qrContainer, {
       text: TARGET_URL,
-      width: 600,
-      height: 600,
+      width: SIZE,
+      height: SIZE,
       correctLevel: QRCode.CorrectLevel.H
     });
 
