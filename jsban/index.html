@@ -21,11 +21,15 @@
       height: 300px;
     }
 
-    button {
+    a.download {
       margin-top: 20px;
       padding: 10px 18px;
       font-size: 14px;
-      cursor: pointer;
+      text-decoration: none;
+      color: white;
+      background: #0066ff;
+      border-radius: 6px;
+      font-weight: 500;
     }
   </style>
 </head>
@@ -33,49 +37,33 @@
 <body>
 
   <div id="qrcode"></div>
-  <button id="downloadBtn">Download SVG</button>
+  <a id="downloadLink" class="download" style="display:none;">Download SVG</a>
 
-  <!-- ✅ correct local QRCode library -->
   <script src="js/qrcode-browser.js"></script>
 
   <script>
-    const url = "https://js2ban.github.io/jsban/";
-    let svgData = "";
+    const targetUrl = "https://js2ban.github.io/jsban/";
 
     QRCode.toString(
-      url,
+      targetUrl,
       { type: "svg", errorCorrectionLevel: "H" },
       function (err, svg) {
         if (err) {
           console.error(err);
           return;
         }
-        svgData = svg;
+
+        // QR 표시
         document.getElementById("qrcode").innerHTML = svg;
+
+        // 다운로드 링크 생성 (data URL)
+        const encoded = encodeURIComponent(svg);
+        const downloadLink = document.getElementById("downloadLink");
+        downloadLink.href = `data:image/svg+xml;charset=utf-8,${encoded}`;
+        downloadLink.download = "jsban-qr.svg";
+        downloadLink.style.display = "inline-block";
       }
     );
-  
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-      if (!svgData) {
-        alert("QR not ready yet");
-        return;
-      }
-  
-      const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-  
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = "jsban-qr.svg";
-  
-      // ✅ DOM에 추가
-      document.body.appendChild(link);
-      link.click();
-  
-      // ✅ 정리
-      document.body.removeChild(link);
-      URL.revokeObjectURL(url);
-    });
   </script>
 
 </body>
