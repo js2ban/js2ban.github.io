@@ -117,6 +117,9 @@
   
       <!-- vCard link -->
       <a class="button addContactBtn" href="hanwha.vcf">Add Contact</a>
+      <p style="font-size:13px; color:#666; margin-top:8px;">
+        [Android] Tap the downloaded file to open the contact screen.
+      </p>
     </div>
 
     <div class="card">
@@ -127,18 +130,26 @@
       
       <!-- vCard link -->
       <a class="button addContactBtn" href="daehan.vcf">Add Contact</a>
+      <p style="font-size:13px; color:#666; margin-top:8px;">
+        [Android] Tap the downloaded file to open the contact screen.
+      </p>
     </div>
-
-
   
     <!-- ===== UX Script ===== -->
     <script>
-      const buttons = document.querySelectorAll(".addContactBtn");
-      const loading = document.getElementById("loading");
+      document.addEventListener("DOMContentLoaded", () => {
+        const buttons = document.querySelectorAll(".addContactBtn");
+        const loading = document.getElementById("loading");
     
-      buttons.forEach(btn => {
-        btn.addEventListener("click", () => {
-          loading.style.display = "flex";
+        buttons.forEach(btn => {
+          btn.addEventListener("click", () => {
+            loading.style.display = "flex";
+    
+            // 너무 오래 안 보이게
+            setTimeout(() => {
+              loading.style.display = "none";
+            }, 800);
+          });
         });
       });
     </script>
