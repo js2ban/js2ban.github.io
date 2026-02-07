@@ -2,94 +2,110 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Jaeseog Ban – QR</title>
+  <title>Jaeseog Ban | ADVANTAGE TANKERS</title>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
     body {
       margin: 0;
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       font-family: system-ui, sans-serif;
+      background: #f5f6f8;
+    }
+
+    .container {
       background: white;
+      padding: 24px;
+      border-radius: 14px;
+      width: 100%;
+      max-width: 360px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+      text-align: center;
     }
 
-    #qrcode img {
-      width: 300px;
-      height: 300px;
+    h1 {
+      font-size: 20px;
+      margin-bottom: 6px;
     }
 
-    button {
-      margin-top: 20px;
-      padding: 10px 18px;
+    .subtitle {
       font-size: 14px;
-      cursor: pointer;
+      color: #666;
+      margin-bottom: 24px;
+    }
+
+    .card {
+      border: 1px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .card h2 {
+      font-size: 16px;
+      margin-bottom: 8px;
+    }
+
+    .info {
+      font-size: 13px;
+      color: #555;
+      line-height: 1.4;
+      margin-bottom: 12px;
+    }
+
+    a.button {
+      display: block;
+      padding: 12px;
+      border-radius: 8px;
+      background: #2563eb;
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    footer {
+      margin-top: 18px;
+      font-size: 11px;
+      color: #999;
     }
   </style>
 </head>
 
 <body>
 
-  <div id="qrcode"></div>
-  <button id="downloadBtn">Download PNG + SVG</button>
+  <div class="container">
+    <h1>Jaeseog Ban</h1>
+    <div class="subtitle">
+      ADVANTAGE TANKERS<br>
+      Lead Hull &amp; Outfitting Supervisor
+    </div>
 
-  <!-- PNG용 QR (qrcodejs) -->
-  <script src="js/qrcodejs.min.js"></script>
+    <div class="card">
+      <h2>Hanwha Office</h2>
+      <div class="info">
+        Geoje-si, Gyeongsangnam-do<br>
+        hanwha.geden@gmail.com
+      </div>
+      <a class="button" href="hanwha.vcf">연락처 추가</a>
+    </div>
 
-  <script>
-    const TARGET_URL = "https://js2ban.github.io/jsban/";
-    const SIZE = 1024; // 인쇄용 고해상도 PNG
+    <div class="card">
+      <h2>Daehan Office</h2>
+      <div class="info">
+        Yeongam / Haenam<br>
+        daehan.geden@gmail.com
+      </div>
+      <a class="button" href="daehan.vcf">연락처 추가</a>
+    </div>
 
-    /* =========================
-       1️⃣ PNG QR 생성
-    ========================= */
-    const qr = new QRCode(document.getElementById("qrcode"), {
-      text: TARGET_URL,
-      width: SIZE,
-      height: SIZE,
-      correctLevel: QRCode.CorrectLevel.H
-    });
-
-    /* =========================
-       2️⃣ SVG QR 직접 생성
-       (라이브러리 없음)
-    ========================= */
-    function generateSvgQR(text, size = 1024) {
-      const encoded = encodeURIComponent(text);
-      return `
-<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 21 21">
-  <rect width="21" height="21" fill="white"/>
-  <image href="https://api.qrserver.com/v1/create-qr-code/?size=21x21&data=${encoded}" width="21" height="21"/>
-</svg>`;
-    }
-
-    /* =========================
-       3️⃣ 다운로드 처리
-    ========================= */
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-
-      /* PNG 다운로드 */
-      const img = document.querySelector("#qrcode img");
-      const pngLink = document.createElement("a");
-      pngLink.href = img.src;
-      pngLink.download = "jsban-qr-1024px.png";
-      pngLink.click();
-
-      /* SVG 다운로드 */
-      const svgData = generateSvgQR(TARGET_URL);
-      const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
-      const url = URL.createObjectURL(blob);
-
-      const svgLink = document.createElement("a");
-      svgLink.href = url;
-      svgLink.download = "jsban-qr.svg";
-      svgLink.click();
-
-      URL.revokeObjectURL(url);
-    });
-  </script>
+    <footer>
+      © ADVANTAGE TANKERS
+    </footer>
+  </div>
 
 </body>
 </html>
