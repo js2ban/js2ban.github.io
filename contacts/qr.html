@@ -59,8 +59,8 @@
 
     const qr = new QRCode(qrContainer, {
       text: TARGET_URL,
-      width: 300,
-      height: 300,
+      width: 600,
+      height: 600,
       correctLevel: QRCode.CorrectLevel.H
     });
 
@@ -79,7 +79,7 @@
 
       const link = document.createElement("a");
       link.href = pngUrl;
-      link.download = `${NAME}-QR.png`;   // ← 자동 파일명
+      link.download = `${NAME}-QR-1024px.png`;   // ← 자동 파일명
 
       document.body.appendChild(link);
       link.click();
