@@ -1,7 +1,7 @@
 [index.html] : For user who scan QR code
 row 5
   <title>Jaeseog Ban | ADVANTAGE TANKERS</tile>
-row 81~83
+row 107~109
     <h1>Jaeseog Ban</h1>
     <div class="subtitle">
       Lead Hull &amp; Outfitting Supervisor
