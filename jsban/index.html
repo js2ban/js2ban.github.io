@@ -37,34 +37,50 @@
 <body>
 
   <div id="qrcode"></div>
-  <a id="downloadLink" class="download" style="display:none;">Download SVG</a>
+  <a id="downloadLink" style="display:none; margin-top:20px;">Download SVG</a>
 
   <script src="js/qrcode.min.js"></script>
 
   <script>
     const targetUrl = "https://js2ban.github.io/jsban/";
 
-    QRCode.toString(
-      targetUrl,
-      { type: "svg", errorCorrectionLevel: "H" },
-      function (err, svg) {
-        if (err) {
-          console.error(err);
-          return;
+    // 1️⃣ Canvas 기반 QR 생성
+    const qr = new QRCode(document.getElementById("qrcode"), {
+      text: targetUrl,
+      width: 300,
+      height: 300,
+      correctLevel: QRCode.CorrectLevel.H
+    });
+
+    // 2️⃣ Canvas → SVG 변환
+    setTimeout(() => {
+      const canvas = document.querySelector("#qrcode canvas");
+      if (!canvas) return;
+
+      const ctx = canvas.getContext("2d");
+      const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${canvas.width}" height="${canvas.height}" shape-rendering="crispEdges">`;
+
+      const scale = 1;
+      for (let y = 0; y < canvas.height; y++) {
+        for (let x = 0; x < canvas.width; x++) {
+          const i = (y * canvas.width + x) * 4;
+          if (imgData.data[i] === 0) {
+            svg += `<rect x="${x}" y="${y}" width="${scale}" height="${scale}" fill="black"/>`;
+          }
         }
-
-        // QR 표시
-        document.getElementById("qrcode").innerHTML = svg;
-
-        // 다운로드 링크 생성 (data URL)
-        const encoded = encodeURIComponent(svg);
-        const downloadLink = document.getElementById("downloadLink");
-        downloadLink.href = `data:image/svg+xml;charset=utf-8,${encoded}`;
-        downloadLink.download = "jsban-qr.svg";
-        downloadLink.style.display = "inline-block";
       }
-    );
+      svg += `</svg>`;
+
+      // 3️⃣ 다운로드 링크 활성화
+      const link = document.getElementById("downloadLink");
+      link.href = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(svg);
+      link.download = "jsban-qr.svg";
+      link.style.display = "inline-block";
+    }, 300);
   </script>
 
 </body>
+
 </html>
