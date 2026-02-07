@@ -15,10 +15,12 @@
       background: white;
       font-family: system-ui, sans-serif;
     }
+
     #qrcode svg {
       width: 300px;
       height: 300px;
     }
+
     button {
       margin-top: 20px;
       padding: 10px 18px;
@@ -33,7 +35,8 @@
   <div id="qrcode"></div>
   <button id="downloadBtn">Download SVG</button>
 
-  <script src="js/qrcode.min.js"></script>
+  <!-- ✅ 브라우저 전용 QRCode -->
+  <script src="js/qrcode-browser.js"></script>
 
   <script>
     const url = "https://js2ban.github.io/jsban/";
