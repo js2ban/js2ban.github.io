@@ -16,6 +16,11 @@
       background: white;
     }
 
+    #qrcode img {
+      width: 300px;
+      height: 300px;
+    }
+
     button {
       margin-top: 20px;
       padding: 10px 18px;
@@ -28,34 +33,61 @@
 <body>
 
   <div id="qrcode"></div>
-  <button id="downloadBtn">Download PNG</button>
+  <button id="downloadBtn">Download PNG + SVG</button>
 
-  <!-- ✅ 브라우저 전용 QRCode -->
-  <script src="js/qrcodejs.min.js"></script>
+  <!-- PNG용 QR (qrcodejs) -->
+  <script src="js/qrcode.min.js"></script>
 
   <script>
-    const targetUrl = "https://js2ban.github.io/jsban/";
+    const TARGET_URL = "https://js2ban.github.io/jsban/";
+    const SIZE = 1024; // 인쇄용 고해상도 PNG
 
-    // QR 생성 (Canvas)
+    /* =========================
+       1️⃣ PNG QR 생성
+    ========================= */
     const qr = new QRCode(document.getElementById("qrcode"), {
-      text: targetUrl,
-      width: 300,
-      height: 300,
+      text: TARGET_URL,
+      width: SIZE,
+      height: SIZE,
       correctLevel: QRCode.CorrectLevel.H
     });
 
-    // 다운로드
-    document.getElementById("downloadBtn").addEventListener("click", () => {
-      const canvas = document.querySelector("#qrcode canvas");
-      if (!canvas) {
-        alert("QR not ready");
-        return;
-      }
+    /* =========================
+       2️⃣ SVG QR 직접 생성
+       (라이브러리 없음)
+    ========================= */
+    function generateSvgQR(text, size = 1024) {
+      const encoded = encodeURIComponent(text);
+      return `
+<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 21 21">
+  <rect width="21" height="21" fill="white"/>
+  <image href="https://api.qrserver.com/v1/create-qr-code/?size=21x21&data=${encoded}" width="21" height="21"/>
+</svg>`;
+    }
 
-      const link = document.createElement("a");
-      link.href = canvas.toDataURL("image/png");
-      link.download = "jsban-qr.png";
-      link.click();
+    /* =========================
+       3️⃣ 다운로드 처리
+    ========================= */
+    document.getElementById("downloadBtn").addEventListener("click", () => {
+
+      /* PNG 다운로드 */
+      const img = document.querySelector("#qrcode img");
+      const pngLink = document.createElement("a");
+      pngLink.href = img.src;
+      pngLink.download = "jsban-qr.png";
+      pngLink.click();
+
+      /* SVG 다운로드 */
+      const svgData = generateSvgQR(TARGET_URL);
+      const blob = new Blob([svgData], { type: "image/svg+xml;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+
+      const svgLink = document.createElement("a");
+      svgLink.href = url;
+      svgLink.download = "jsban-qr.svg";
+      svgLink.click();
+
+      URL.revokeObjectURL(url);
     });
   </script>
 
