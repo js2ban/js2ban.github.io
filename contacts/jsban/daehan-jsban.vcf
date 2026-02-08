@@ -1,11 +1,11 @@
 BEGIN:VCARD
 VERSION:3.0
 
-N:Ban;Jaeseog;;;                                                   // name
-FN:Jaeseog Ban                                                     // name
-TITLE:Lead Hull & Outfitting Supervisor                            // title
-TEL;TYPE=CELL:+821085149064                                        // mobile
-EMAIL;TYPE=HOME,INTERNET:js2ban@gmail.com                          // email
+N:Ban;Jaeseog;;;
+FN:Jaeseog Ban
+TITLE:Lead Hull & Outfitting Supervisor
+TEL;TYPE=CELL:+821085149064
+EMAIL;TYPE=HOME,INTERNET:js2ban@gmail.com
 
 ORG:GEDEN LINES
 EMAIL;TYPE=WORK,INTERNET:daehan.geden@gmail.com
