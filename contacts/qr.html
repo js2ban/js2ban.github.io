@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>QR Generator</title>
-
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <style>
@@ -17,11 +16,7 @@
       background: white;
       font-family: system-ui, sans-serif;
     }
-
-    #qrcode {
-      margin-bottom: 20px;
-    }
-
+    #qrcode { margin-bottom: 20px; }
     button {
       padding: 10px 18px;
       font-size: 14px;
@@ -35,30 +30,30 @@
   <div id="qrcode"></div>
   <button id="downloadBtn">Download PNG</button>
 
-  <!-- QRCodeJS -->
   <script src="js/qrcodejs.min.js"></script>
 
   <script>
     // =========================
-    // 1. URL 파라미터 읽기
+    // 1. 사용자 파라미터
     // =========================
     const params = new URLSearchParams(window.location.search);
+    const USER = params.get("user");
 
-    const TARGET_URL = params.get("u");     // QR에 들어갈 URL
-    const NAME = params.get("name") || "qr"; // 파일명용 (옵션)
-    const SIZE = 1024;
-
-    if (!TARGET_URL) {
-      alert("Missing target URL (?u=...)");
-      throw new Error("TARGET_URL is required");
+    if (!USER) {
+      alert("Missing user (?user=jsban)");
+      throw new Error("USER is required");
     }
 
     // =========================
-    // 2. QR 생성
+    // 2. 대상 URL 자동 생성
     // =========================
-    const qrContainer = document.getElementById("qrcode");
+    const TARGET_URL = `https://js2ban.github.io/contacts/${USER}/`;
+    const SIZE = 1024;
 
-    const qr = new QRCode(qrContainer, {
+    // =========================
+    // 3. QR 생성
+    // =========================
+    const qr = new QRCode(document.getElementById("qrcode"), {
       text: TARGET_URL,
       width: SIZE,
       height: SIZE,
@@ -66,25 +61,16 @@
     });
 
     // =========================
-    // 3. PNG 다운로드
+    // 4. PNG 다운로드
     // =========================
     document.getElementById("downloadBtn").addEventListener("click", () => {
-      const canvas = qrContainer.querySelector("canvas");
-
-      if (!canvas) {
-        alert("QR not ready yet");
-        return;
-      }
-
-      const pngUrl = canvas.toDataURL("image/png");
+      const canvas = document.querySelector("#qrcode canvas");
+      if (!canvas) return;
 
       const link = document.createElement("a");
-      link.href = pngUrl;
-      link.download = `${NAME}-QR-1024px.png`;   // ← 자동 파일명
-
-      document.body.appendChild(link);
+      link.href = canvas.toDataURL("image/png");
+      link.download = `${USER}-QR-1024px.png`;
       link.click();
-      document.body.removeChild(link);
     });
   </script>
 
