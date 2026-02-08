@@ -2,63 +2,82 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
-  <title>vCard QR Generator</title>
+  <title>vCard QR</title>
 
   <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; }
-    .card { margin-bottom: 40px; }
-    .filename { font-weight: bold; margin-bottom: 10px; }
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      text-align: center;
+    }
+    #qrcode {
+      margin-top: 20px;
+    }
   </style>
 </head>
 <body>
 
-<h2>vCard → QR 생성</h2>
-
-<input type="file" id="fileInput" accept=".vcf" multiple />
-
-<hr>
-
-<div id="container"></div>
+<h2 id="title">vCard QR</h2>
+<div id="qrcode"></div>
 
 <script>
-const input = document.getElementById("fileInput");
-const container = document.getElementById("container");
+function getPersonFromQuery() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get("person");
+}
 
-input.addEventListener("change", () => {
-  container.innerHTML = "";
+async function loadVCard(person) {
+  const response = await fetch(`${person}.vcf`);
+  if (!response.ok) {
+    throw new Error("vCard 파일을 찾을 수 없습니다.");
+  }
+  return await response.text();
+}
 
-  Array.from(input.files).forEach(file => {
-    const reader = new FileReader();
+function downloadPNG(canvas, filename) {
+  const link = document.createElement("a");
+  link.href = canvas.toDataURL("image/png");
+  link.download = filename;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
 
-    reader.onload = () => {
-      const vcardText = reader.result;
+async function init() {
+  const person = getPersonFromQuery();
+  if (!person) {
+    document.getElementById("title").textContent =
+      "URL에 ?person=이름 을 붙여주세요";
+    return;
+  }
 
-      const card = document.createElement("div");
-      card.className = "card";
+  document.getElementById("title").textContent =
+    `vCard QR – ${person}`;
 
-      const title = document.createElement("div");
-      title.className = "filename";
-      title.textContent = file.name;
+  const vcardText = await loadVCard(person);
 
-      const qrDiv = document.createElement("div");
+  const qrContainer = document.getElementById("qrcode");
+  qrContainer.innerHTML = "";
 
-      card.appendChild(title);
-      card.appendChild(qrDiv);
-      container.appendChild(card);
-
-      new QRCode(qrDiv, {
-        text: vcardText,
-        width: 256,
-        height: 256,
-        correctLevel: QRCode.CorrectLevel.Q
-      });
-    };
-
-    reader.readAsText(file, "UTF-8");
+  const qr = new QRCode(qrContainer, {
+    text: vcardText,
+    width: 256,
+    height: 256,
+    correctLevel: QRCode.CorrectLevel.Q
   });
-});
+
+  // QR 생성 후 PNG 자동 다운로드
+  setTimeout(() => {
+    const canvas = qrContainer.querySelector("canvas");
+    if (canvas) {
+      downloadPNG(canvas, `${person}.png`);
+    }
+  }, 300);
+}
+
+init();
 </script>
 
 </body>
