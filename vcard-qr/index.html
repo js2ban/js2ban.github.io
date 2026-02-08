@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>vCard QR Generator</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    .card { margin-bottom: 40px; }
+    .filename { font-weight: bold; margin-bottom: 10px; }
+  </style>
+</head>
+<body>
+
+<h2>vCard → QR 생성</h2>
+
+<input type="file" id="fileInput" accept=".vcf" multiple />
+
+<hr>
+
+<div id="container"></div>
+
+<script>
+const input = document.getElementById("fileInput");
+const container = document.getElementById("container");
+
+input.addEventListener("change", () => {
+  container.innerHTML = "";
+
+  Array.from(input.files).forEach(file => {
+    const reader = new FileReader();
+
+    reader.onload = () => {
+      const vcardText = reader.result;
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      const title = document.createElement("div");
+      title.className = "filename";
+      title.textContent = file.name;
+
+      const qrDiv = document.createElement("div");
+
+      card.appendChild(title);
+      card.appendChild(qrDiv);
+      container.appendChild(card);
+
+      new QRCode(qrDiv, {
+        text: vcardText,
+        width: 256,
+        height: 256,
+        correctLevel: QRCode.CorrectLevel.Q
+      });
+    };
+
+    reader.readAsText(file, "UTF-8");
+  });
+});
+</script>
+
+</body>
+</html>
