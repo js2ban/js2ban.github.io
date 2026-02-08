@@ -3,7 +3,7 @@ VERSION:3.0
 
 N:Ban;Jaeseog;;;                                                   // name
 FN:Jaeseog Ban                                                     // name
-TITLE:Lead Hull & Outfitting Supervisor                            // title
+TITLE:Lead Hull & Outfitting Supervisor                            X- title
 TEL;TYPE=CELL:+821085149064                                        // mobile
 EMAIL;TYPE=HOME,INTERNET:js2ban@gmail.com                          // email
 
