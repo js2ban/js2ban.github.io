@@ -57,14 +57,15 @@ async function init() {
     `vCard QR – ${person}`;
 
   const vcardText = await loadVCard(person);
+  const SIZE = 1024;
 
   const qrContainer = document.getElementById("qrcode");
   qrContainer.innerHTML = "";
 
   const qr = new QRCode(qrContainer, {
     text: vcardText,
-    width: 256,
-    height: 256,
+    width: SIZE,
+    height: SIZE,
     correctLevel: QRCode.CorrectLevel.Q
   });
 
@@ -72,7 +73,7 @@ async function init() {
   setTimeout(() => {
     const canvas = qrContainer.querySelector("canvas");
     if (canvas) {
-      downloadPNG(canvas, `${person}.png`);
+      downloadPNG(canvas, `${person}-1024px.png`);
     }
   }, 300);
 }
